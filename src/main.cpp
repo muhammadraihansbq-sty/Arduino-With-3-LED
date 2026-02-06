@@ -1,38 +1,77 @@
 #include <Arduino.h>
 
-// Deklarasi pin LED
-// Mendeklarasikan variabel konstanta integer untuk menyimpan nomor pin LED
-const int ledMerah = 8;
-const int ledKuning = 9;
-const int ledHijau = 10;
+// Definisikan variabel
+int button1Pin = 2; // Pin digital tempat tombol 1 terhubung.
+int ledRedPin = 8;  // Pin digital tempat LED merah terhubung.
 
+int button2Pin = 4; // Pin digital tempat tombol 2 terhubung.
+int ledGreenPin = 10; // Pin digital tempat LED hijau terhubung.
+
+// Variabel untuk menyimpan status tombol
+bool buttonState1 = false;
+bool buttonState2 = false;
 
 void setup() {
-  // put your setup code here, to run once:
-// Mengatur pin-pin yang dihubungkan ke LED sebagai output.
-  // Hal ini berarti pin-pin tersebut dapat digunakan untuk mengendalikan LED.
-  pinMode(ledMerah, OUTPUT);
-  pinMode(ledKuning, OUTPUT);
-  pinMode(ledHijau, OUTPUT);
+
+  pinMode(ledRedPin, OUTPUT);    // Atur pin LED merah sebagai output.
+  pinMode(button1Pin, INPUT);    // Atur pin tombol 1 sebagai input.
+
+  pinMode(ledGreenPin, OUTPUT);  // Atur pin LED hijau sebagai output.
+  pinMode(button2Pin, INPUT);    // Atur pin tombol 2 sebagai input.
+
+  // Mulai komunikasi serial pada baud rate 9600
+  Serial.begin(9600);
+  Serial.println("Program push button dimulai.");
+
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-// LED Merah
-  // Menyalakan LED Merah selama 2 detik, kemudian mematikannya.
-  digitalWrite(ledMerah, HIGH);
-  delay(1000);
-  digitalWrite(ledMerah, LOW);
 
-  // LED Kuning
-  // Menyalakan LED Kuning selama 2 detik, kemudian mematikannya.
-  digitalWrite(ledKuning, HIGH);
-  delay(1000);
-  digitalWrite(ledKuning, LOW);
+  // Baca status tombol
+  buttonState1 = digitalRead(button1Pin);
+  buttonState2 = digitalRead(button2Pin);
 
-  // LED Hijau
-  // Menyalakan LED Hijau selama 2 detik, kemudian mematikannya.
-  digitalWrite(ledHijau, HIGH);
-  delay(1000);
-  digitalWrite(ledHijau, LOW);
+  // Periksa apakah tombol 1 ditekan
+  if (buttonState1 == HIGH){
+
+    Serial.println("LED Merah Menyala");
+
+    // Nyalakan LED Merah.
+    digitalWrite(ledRedPin, HIGH);
+
+    // Tunda sebentar untuk menghindari pembacaan ganda
+    delay(1000);
+
+  } else {
+
+    Serial.println("LED Merah Mati");
+
+    // Matikan LED Merah.
+    digitalWrite(ledRedPin, LOW);
+
+    // Tunda sebentar untuk menghindari pembacaan ganda
+    delay(200);
+  }
+
+  // Periksa apakah tombol 2 ditekan
+  if (buttonState2 == HIGH){
+
+    Serial.println("LED Hijau Menyala");
+
+    // Nyalakan LED Hijau.
+    digitalWrite(ledGreenPin, HIGH);
+
+    // Tunda sebentar untuk menghindari pembacaan ganda
+    delay(1000);
+
+  } else {
+
+    Serial.println("LED Hijau Mati");
+
+    // Matikan LED Hijau.
+    digitalWrite(ledGreenPin, LOW);
+
+    // Tunda sebentar untuk menghindari pembacaan ganda
+    delay(200);
+  }
 }
